@@ -1,0 +1,8 @@
+.header-crowd {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 85%),
+    linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 85%),
+    linear-gradient(to bottom, #000 55%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}

@@ -1,0 +1,27 @@
+.navigation-pill {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navigation-pill {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58));
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+  }
+}
+
+/* Optional host class for devices where native blur is too expensive.
+   This only changes paint; geometry and navigation behavior stay identical. */
+:host(.opaque-navigation) .navigation-pill {
+  background: #fff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .navigation-pill {
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

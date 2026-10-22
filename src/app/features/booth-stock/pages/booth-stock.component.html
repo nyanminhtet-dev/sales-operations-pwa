@@ -1,0 +1,96 @@
+<section aria-labelledby="stock-title" class="space-y-3 px-4 pt-5 sm:px-6 sm:pt-6">
+  <header class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 id="stock-title" class="text-2xl font-bold tracking-tight text-text-primary">Stock</h1>
+      <p class="mt-0.5 text-xs text-text-muted">My booth inventory</p>
+    </div>
+    <span class="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs text-text-primary">
+      <lucide-icon name="store" [size]="16" aria-hidden="true" class="shrink-0 text-brand" />
+      {{ demo.booth }}
+    </span>
+  </header>
+  <p class="text-[11px] text-text-muted"><span class="font-semibold text-brand">Demo data</span> · {{ demo.reportingDate | date:'d MMM y':'+0630' }} · Static booth inventory</p>
+
+  <section aria-labelledby="available-stock-title" class="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm shadow-text-primary/5">
+    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand">
+      <lucide-icon name="box" [size]="26" [strokeWidth]="1.5" aria-hidden="true" />
+    </span>
+    <div>
+      <h2 id="available-stock-title" class="text-xs font-medium text-text-primary">Available stock</h2>
+      <p class="mt-0.5 text-brand"><span data-total-units class="text-3xl font-bold">{{ totalUnits | number }}</span><span class="ml-1 text-sm">units</span></p>
+      <p class="text-xs text-text-muted">Across {{ variantCount }} variants</p>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-2 gap-3">
+    <section aria-labelledby="low-stock-title" class="flex items-center gap-2 rounded-xl border border-border bg-surface p-3 shadow-sm shadow-text-primary/5">
+      <lucide-icon name="triangle-alert" [size]="23" [strokeWidth]="1.5" aria-hidden="true" class="shrink-0 text-orange-600" />
+      <div class="min-w-0">
+        <h2 id="low-stock-title" class="text-xs font-semibold text-text-primary">Low stock</h2>
+        <p class="mt-1 text-text-primary"><span class="text-xl font-bold">{{ lowStockItems.length }}</span><span class="ml-1 text-xs text-text-muted">variants</span></p>
+      </div>
+    </section>
+    <section aria-labelledby="activity-title" class="rounded-xl border border-border bg-surface p-3 shadow-sm shadow-text-primary/5">
+      <h2 id="activity-title" class="text-xs font-semibold text-text-primary">Today’s activity</h2>
+      <dl class="mt-2 grid grid-cols-2 divide-x divide-border">
+        <div class="pr-2"><dt class="text-[11px] text-text-muted">Sold</dt><dd class="text-xl font-bold text-text-primary">{{ soldToday }}</dd></div>
+        <div class="pl-2"><dt class="text-[11px] text-text-muted">Checked out</dt><dd class="text-xl font-bold text-text-primary">{{ checkedOutToday }}</dd></div>
+      </dl>
+    </section>
+  </div>
+
+  <section aria-labelledby="stock-actions-title" class="rounded-2xl border border-border bg-surface p-3 shadow-sm shadow-text-primary/5">
+    <h2 id="stock-actions-title" class="text-sm font-semibold text-text-primary">Stock actions</h2>
+    <p class="mt-0.5 text-xs text-text-muted">Transfer stock with the shared pool</p>
+    <div class="mt-3 grid grid-cols-2 gap-2">
+      <button type="button" (click)="previewTransfer('out')" aria-describedby="transfer-preview"
+        class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="box" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-xs font-semibold text-text-primary">Check Out</span></span>
+        <span class="mt-1.5 block text-[11px] leading-snug text-text-muted">Receive stock from shared pool</span>
+      </button>
+      <button type="button" (click)="previewTransfer('in')" aria-describedby="transfer-preview"
+        class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="rotate-ccw" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-xs font-semibold text-text-primary">Check In</span></span>
+        <span class="mt-1.5 block text-[11px] leading-snug text-text-muted">Return remaining stock to shared pool</span>
+      </button>
+    </div>
+    <p id="transfer-preview" class="mt-2 text-[11px] text-text-muted">Preview actions only. Inventory stays unchanged.</p>
+    <p role="status" class="text-xs leading-relaxed text-brand" [class.mt-2]="transferNotice">{{ transferNotice }}</p>
+  </section>
+
+  <section aria-labelledby="low-items-title" class="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm shadow-text-primary/5">
+    <header class="border-b border-border px-3 py-3">
+      <h2 id="low-items-title" class="text-sm font-semibold text-text-primary">Low stock items</h2>
+      <p class="mt-0.5 text-xs text-text-muted">Variants below {{ demo.lowStockThreshold }} units</p>
+    </header>
+    <ul class="divide-y divide-border px-3">
+      <li *ngFor="let item of lowStockItems; trackBy: trackById">
+        <button type="button" (click)="toggleVariant(item.id)" [attr.aria-expanded]="selectedVariantId === item.id" [attr.aria-controls]="'variant-' + item.id"
+          class="flex min-h-[68px] w-full items-center gap-2 rounded-lg py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-page text-text-muted">
+            <img *ngIf="item.image && !failedImages.has(item.id); else imageFallback" [src]="item.image" alt="" width="40" height="40" loading="lazy" class="h-full w-full object-cover" (error)="failedImages.add(item.id)" />
+            <ng-template #imageFallback><lucide-icon name="box" [size]="20" aria-hidden="true" /></ng-template>
+          </span>
+          <span class="min-w-0 flex-1"><span class="block truncate text-xs font-semibold text-text-primary">{{ item.name }} - {{ item.variant }}</span><span class="mt-1 block truncate text-[10px] text-text-muted">SKU: {{ item.sku }}</span></span>
+          <span class="shrink-0 text-right"><span class="block text-base font-bold text-orange-700">{{ item.available }}</span><span class="block text-[10px] text-text-muted">left</span></span>
+          <lucide-icon name="arrow-right" [size]="14" aria-hidden="true" class="shrink-0 text-text-muted" />
+        </button>
+        <p [id]="'variant-' + item.id" [hidden]="selectedVariantId !== item.id" class="pb-3 pl-12 text-xs leading-relaxed text-text-muted">Demo variant · {{ item.available }} units available · Low stock threshold: {{ demo.lowStockThreshold }} units</p>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="movements-title" class="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm shadow-text-primary/5">
+    <header class="border-b border-border px-3 py-3">
+      <h2 id="movements-title" class="text-sm font-semibold text-text-primary">Recent stock movements</h2>
+      <p class="mt-0.5 text-xs text-text-muted">Latest check out / check in / sale activities</p>
+    </header>
+    <ul class="divide-y divide-border px-3">
+      <li *ngFor="let movement of movements; trackBy: trackById" class="flex items-start gap-2 py-3">
+        <span [ngClass]="movement.style" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"><lucide-icon [name]="movement.icon" [size]="18" aria-hidden="true" /></span>
+        <div class="min-w-0 flex-1"><p class="text-xs font-semibold text-text-primary">{{ movement.label }}</p><p class="mt-0.5 text-[10px] leading-relaxed text-text-muted">{{ movement.productLabel }}</p></div>
+        <div class="shrink-0 text-right"><p class="text-xs font-semibold" [ngClass]="movement.type === 'in' ? 'text-positive' : 'text-brand'">{{ movement.sign }}{{ movement.units }} units</p><time [attr.datetime]="movement.at" class="mt-1 block text-[10px] text-text-muted">{{ movement.at | date:'MMM d, h:mm a':'+0630' }}</time></div>
+      </li>
+    </ul>
+  </section>
+</section>

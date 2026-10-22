@@ -1,0 +1,21 @@
+<header [ngClass]="scrolled ? 'border-border bg-surface/0' : ((showCrowd$ | async) ? 'border-transparent bg-surface' : 'border-border bg-surface')"
+  class="relative border-b pt-[env(safe-area-inset-top)] transition-colors duration-500 ease-out motion-reduce:transition-none">
+  <div aria-hidden="true" [ngClass]="scrolled ? 'opacity-100' : 'opacity-0'"
+    class="header-glass pointer-events-none absolute inset-0 z-10 bg-surface/75 backdrop-blur-md transition-opacity duration-500 ease-out motion-reduce:transition-none"></div>
+  <div class="relative pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <div class="relative mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <img *ngIf="showCrowd$ | async" src="assets/home-header-crowd.png" alt="" aria-hidden="true"
+        class="header-crowd pointer-events-none absolute right-0 top-0 h-56 w-3/4 object-cover object-right opacity-75 sm:h-64 sm:w-2/3" />
+      <a routerLink="/home" aria-label="PK Counter home"
+        class="relative z-20 flex min-h-[48px] items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2">
+        <img src="assets/main-logo.png" alt="" width="40" height="40" class="h-10 w-10 shrink-0 object-contain" />
+        <span class="text-lg font-bold tracking-tight">PK Counter</span>
+      </a>
+
+      <button type="button" disabled aria-label="Profile (coming soon)" title="Profile coming soon"
+        class="relative z-20 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-page text-text-muted disabled:cursor-not-allowed">
+        <lucide-icon name="user-round" aria-hidden="true" [size]="20" [strokeWidth]="1.75" class="h-5 w-5" />
+      </button>
+    </div>
+  </div>
+</header>

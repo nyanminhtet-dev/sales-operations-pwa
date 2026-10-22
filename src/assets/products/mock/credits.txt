@@ -1,0 +1,49 @@
+Sample product photography - PK Counter demo catalogue
+
+These are photographs of representative products, not actual PK merchandise.
+All images were proportionally resized and centered on white 600 x 600 canvases,
+then encoded as JPEG. No product branding was added or altered.
+The licenses below apply to the respective image assets, not application code.
+
+pk-cap.jpg
+Title: Adidas Baseball cap.JPG
+Photographer: Oxyman
+Source: https://commons.wikimedia.org/wiki/File:Adidas_Baseball_cap.JPG
+License selected: Creative Commons Attribution 2.5 Generic
+License: https://creativecommons.org/licenses/by/2.5/
+
+pk-shirt.jpg
+Title: T-shirt2.jpg
+Photographer: Elkagye
+Source: https://commons.wikimedia.org/wiki/File:T-shirt2.jpg
+License: Released into the public domain by the photographer.
+
+pk-hoodie.jpg
+Title: Hoodie m7agar.jpg
+Photographer: YoussefTahoun
+Source: https://commons.wikimedia.org/wiki/File:Hoodie_m7agar.jpg
+License: CC0 1.0 Universal Public Domain Dedication
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+pk-light-stick.jpg
+Title: Chemical-light01.jpg
+Photographer: Snow64
+Source: https://commons.wikimedia.org/wiki/File:Chemical-light01.jpg
+License: Released into the public domain by the photographer.
+
+pk-keychain.jpg
+Title: Keyrings (ubt).JPG
+Photographer: Tomasz Sienicki (tsca), copyright 2010
+Source: https://commons.wikimedia.org/wiki/File:Keyrings_(ubt).JPG
+License selected: Creative Commons Attribution 3.0 Unported
+License: https://creativecommons.org/licenses/by/3.0/
+
+pk-tote.jpg
+Title: 04-QWSTION-FLAP-TOTE-SMALL-SAND-FRONT.jpg
+Creator: QWSTION
+Source: https://commons.wikimedia.org/wiki/File:04-QWSTION-FLAP-TOTE-SMALL-SAND-FRONT.jpg
+License: Creative Commons Attribution-ShareAlike 4.0 International
+License: https://creativecommons.org/licenses/by-sa/4.0/
+This resized and padded image remains available under CC BY-SA 4.0.
+
+The creators and pictured brands do not endorse this application.

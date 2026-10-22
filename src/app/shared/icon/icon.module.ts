@@ -1,0 +1,58 @@
+import { NgModule } from '@angular/core';
+import {
+  ArrowRight,
+  ArrowDownRight,
+  ArrowUpRight,
+  Box,
+  TriangleAlert,
+  Store,
+  History,
+  Grid2X2,
+  House,
+  LucideAngularModule,
+  List,
+  Plus,
+  X,
+  MapPin,
+  Minus,
+  ReceiptText,
+  RotateCcw,
+  Search,
+  ScanBarcode,
+  ShoppingCart,
+  UserRound,
+} from 'lucide-angular';
+import { BoxSolid, MoreGridSolid, HouseSolid, ShoppingCartSolid } from './navigation-icons';
+
+@NgModule({
+  imports: [
+    LucideAngularModule.pick({
+      List,
+      Plus,
+      X,
+      BoxSolid,
+      MoreGridSolid,
+      MoreGrid: Grid2X2,
+      HouseSolid,
+      ShoppingCartSolid,
+      ArrowRight,
+      ArrowDownRight,
+      ArrowUpRight,
+      Box,
+      TriangleAlert,
+      Store,
+      History,
+      House,
+      MapPin,
+      Minus,
+      ReceiptText,
+      RotateCcw,
+      Search,
+      ScanBarcode,
+      ShoppingCart,
+      UserRound,
+    }),
+  ],
+  exports: [LucideAngularModule],
+})
+export class IconModule {}

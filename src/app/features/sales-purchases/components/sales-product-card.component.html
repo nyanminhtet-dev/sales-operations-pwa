@@ -1,0 +1,32 @@
+<article class="relative h-full overflow-hidden rounded-xl border border-border bg-surface shadow-sm"
+  [class.flex]="view === 'list'" [class.items-center]="view === 'list'">
+  <button type="button" (click)="selectProduct.emit(product)" [attr.aria-label]="'Select ' + product.name"
+    class="min-w-0 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
+    [class.w-full]="view === 'grid'" [class.flex]="view === 'list'" [class.items-center]="view === 'list'">
+    <span class="flex shrink-0 items-center justify-center bg-page text-text-muted"
+      [ngClass]="view === 'grid' ? 'aspect-square w-full' : 'm-2 h-16 w-16 rounded-lg'">
+      <img *ngIf="product.imageUrl && !imageFailed; else placeholder" [src]="product.imageUrl" alt="" loading="lazy"
+        (error)="imageFailed = true" class="h-full w-full object-contain" />
+      <ng-template #placeholder>
+        <span class="flex flex-col items-center gap-1" aria-hidden="true">
+          <lucide-icon name="box" [size]="32" [strokeWidth]="1.25" />
+          <span *ngIf="view === 'grid'" class="text-xs">No image</span>
+        </span>
+      </ng-template>
+    </span>
+    <span class="block min-w-0 p-2.5">
+      <span class="block truncate text-sm font-semibold" [title]="product.name">{{ product.name }}</span>
+      <span class="mt-1 block truncate text-[11px] text-text-muted" [title]="product.sku">SKU: {{ product.sku }}</span>
+      <span class="mt-1 block whitespace-nowrap text-xs font-bold sm:text-sm">MMK {{ product.price | number:'1.0-0' }}</span>
+      <span *ngIf="product.stock != null" class="mt-1 block text-[11px] font-medium" [ngClass]="[product.stock > 0 ? 'text-positive' : 'text-text-muted', view === 'grid' ? 'flex min-h-[44px] items-center pr-12' : '']"
+        >
+        {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
+      </span>
+    </span>
+  </button>
+  <button type="button" (click)="selectProduct.emit(product)" [attr.aria-label]="'Choose options for ' + product.name"
+    class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+    [ngClass]="view === 'grid' ? 'absolute bottom-2 right-2' : 'mr-2'">
+    <lucide-icon name="plus" aria-hidden="true" [size]="20" />
+  </button>
+</article>

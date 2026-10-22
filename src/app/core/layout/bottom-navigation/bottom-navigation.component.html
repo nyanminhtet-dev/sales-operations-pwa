@@ -1,0 +1,28 @@
+<nav aria-label="Main navigation"
+  class="relative z-30 px-4 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+  <div class="pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <div class="navigation-pill relative pointer-events-auto mx-auto w-80 max-w-full rounded-full border border-border p-1 shadow-sm shadow-text-primary/10">
+      <div class="relative">
+        <div #indicator aria-hidden="true" data-active-indicator
+          class="pointer-events-none absolute inset-y-1 left-0 w-1/4 px-0.5">
+          <div class="h-full rounded-full bg-brand-soft"></div>
+        </div>
+        <ul class="relative grid grid-cols-4">
+          <li *ngFor="let item of items; let index = index; trackBy: trackByPath" class="min-w-0">
+            <a [routerLink]="item.path" [class.is-active]="activeIndex === index"
+              [attr.aria-current]="activeIndex === index ? 'page' : null"
+              [attr.aria-label]="item.label" [title]="item.label"
+              (pointerdown)="$event.button === 0 && press(index)" (keydown.enter)="press(index)"
+              class="relative flex min-h-[56px] items-center justify-center rounded-full text-text-primary/70 transition-colors duration-150 motion-reduce:transition-none hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand [&.is-active]:text-brand">
+              <span data-press-surface class="flex h-12 w-full flex-col items-center justify-center gap-0.5">
+                <lucide-icon [name]="activeIndex === index ? item.solidIcon : item.icon" aria-hidden="true" [size]="22"
+                  [strokeWidth]="1.5" class="h-[22px] w-[22px]" />
+                <span class="text-xs leading-3" [class.font-semibold]="activeIndex === index">{{ item.label }}</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
