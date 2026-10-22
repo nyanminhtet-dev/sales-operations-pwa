@@ -9,7 +9,7 @@
       {{ demo.booth }}
     </span>
   </header>
-  <p class="text-[11px] text-text-muted"><span class="font-semibold text-brand">Demo data</span> · {{ demo.reportingDate | date:'d MMM y':'+0630' }} · Static booth inventory</p>
+  <p class="text-xs text-text-muted"><span class="font-semibold text-brand">Demo data</span> · {{ demo.reportingDate | date:'d MMM y':'+0630' }} · Static booth inventory</p>
 
   <section aria-labelledby="available-stock-title" class="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm shadow-text-primary/5">
     <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand">
@@ -33,8 +33,8 @@
     <section aria-labelledby="activity-title" class="rounded-xl border border-border bg-surface p-3 shadow-sm shadow-text-primary/5">
       <h2 id="activity-title" class="text-xs font-semibold text-text-primary">Today’s activity</h2>
       <dl class="mt-2 grid grid-cols-2 divide-x divide-border">
-        <div class="pr-2"><dt class="text-[11px] text-text-muted">Sold</dt><dd class="text-xl font-bold text-text-primary">{{ soldToday }}</dd></div>
-        <div class="pl-2"><dt class="text-[11px] text-text-muted">Checked out</dt><dd class="text-xl font-bold text-text-primary">{{ checkedOutToday }}</dd></div>
+        <div class="pr-2"><dt class="text-xs text-text-muted">Sold</dt><dd class="text-xl font-bold text-text-primary">{{ soldToday }}</dd></div>
+        <div class="pl-2"><dt class="text-xs text-text-muted">Checked out</dt><dd class="text-xl font-bold text-text-primary">{{ checkedOutToday }}</dd></div>
       </dl>
     </section>
   </div>
@@ -45,16 +45,16 @@
     <div class="mt-3 grid grid-cols-2 gap-2">
       <button type="button" (click)="previewTransfer('out')" aria-describedby="transfer-preview"
         class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="box" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-xs font-semibold text-text-primary">Check Out</span></span>
-        <span class="mt-1.5 block text-[11px] leading-snug text-text-muted">Receive stock from shared pool</span>
+        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="box" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-sm font-semibold text-text-primary">Check Out</span></span>
+        <span class="mt-1.5 block text-xs leading-snug text-text-muted">Receive stock from shared pool</span>
       </button>
       <button type="button" (click)="previewTransfer('in')" aria-describedby="transfer-preview"
         class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="rotate-ccw" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-xs font-semibold text-text-primary">Check In</span></span>
-        <span class="mt-1.5 block text-[11px] leading-snug text-text-muted">Return remaining stock to shared pool</span>
+        <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="rotate-ccw" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-sm font-semibold text-text-primary">Check In</span></span>
+        <span class="mt-1.5 block text-xs leading-snug text-text-muted">Return remaining stock to shared pool</span>
       </button>
     </div>
-    <p id="transfer-preview" class="mt-2 text-[11px] text-text-muted">Preview actions only. Inventory stays unchanged.</p>
+    <p id="transfer-preview" class="mt-2 text-xs text-text-muted">Preview actions only. Inventory stays unchanged.</p>
     <p role="status" class="text-xs leading-relaxed text-brand" [class.mt-2]="transferNotice">{{ transferNotice }}</p>
   </section>
 
@@ -71,8 +71,8 @@
             <img *ngIf="item.image && !failedImages.has(item.id); else imageFallback" [src]="item.image" alt="" width="40" height="40" loading="lazy" class="h-full w-full object-cover" (error)="failedImages.add(item.id)" />
             <ng-template #imageFallback><lucide-icon name="box" [size]="20" aria-hidden="true" /></ng-template>
           </span>
-          <span class="min-w-0 flex-1"><span class="block truncate text-xs font-semibold text-text-primary">{{ item.name }} - {{ item.variant }}</span><span class="mt-1 block truncate text-[10px] text-text-muted">SKU: {{ item.sku }}</span></span>
-          <span class="shrink-0 text-right"><span class="block text-base font-bold text-orange-700">{{ item.available }}</span><span class="block text-[10px] text-text-muted">left</span></span>
+          <span class="min-w-0 flex-1"><span class="block truncate text-sm font-semibold text-text-primary">{{ item.name }} - {{ item.variant }}</span><span class="mt-1 block truncate text-xs text-text-muted">SKU: {{ item.sku }}</span></span>
+          <span class="shrink-0 text-right"><span class="block text-base font-bold text-orange-700">{{ item.available }}</span><span class="block text-xs text-text-muted">left</span></span>
           <lucide-icon name="arrow-right" [size]="14" aria-hidden="true" class="shrink-0 text-text-muted" />
         </button>
         <p [id]="'variant-' + item.id" [hidden]="selectedVariantId !== item.id" class="pb-3 pl-12 text-xs leading-relaxed text-text-muted">Demo variant · {{ item.available }} units available · Low stock threshold: {{ demo.lowStockThreshold }} units</p>
@@ -81,15 +81,18 @@
   </section>
 
   <section aria-labelledby="movements-title" class="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm shadow-text-primary/5">
-    <header class="border-b border-border px-3 py-3">
-      <h2 id="movements-title" class="text-sm font-semibold text-text-primary">Recent stock movements</h2>
+    <header class="border-b border-border px-3 py-2">
+      <div class="flex items-center justify-between gap-2">
+        <h2 id="movements-title" class="min-w-0 text-sm font-semibold text-text-primary sm:text-base">Recent stock movements</h2>
+        <a routerLink="/more/stock-movements" class="inline-flex min-h-[44px] shrink-0 items-center gap-1 rounded-lg text-xs font-semibold text-brand hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-sm">View all <lucide-icon name="arrow-right" [size]="16" aria-hidden="true" /></a>
+      </div>
       <p class="mt-0.5 text-xs text-text-muted">Latest check out / check in / sale activities</p>
     </header>
     <ul class="divide-y divide-border px-3">
       <li *ngFor="let movement of movements; trackBy: trackById" class="flex items-start gap-2 py-3">
         <span [ngClass]="movement.style" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"><lucide-icon [name]="movement.icon" [size]="18" aria-hidden="true" /></span>
-        <div class="min-w-0 flex-1"><p class="text-xs font-semibold text-text-primary">{{ movement.label }}</p><p class="mt-0.5 text-[10px] leading-relaxed text-text-muted">{{ movement.productLabel }}</p></div>
-        <div class="shrink-0 text-right"><p class="text-xs font-semibold" [ngClass]="movement.type === 'in' ? 'text-positive' : 'text-brand'">{{ movement.sign }}{{ movement.units }} units</p><time [attr.datetime]="movement.at" class="mt-1 block text-[10px] text-text-muted">{{ movement.at | date:'MMM d, h:mm a':'+0630' }}</time></div>
+        <div class="min-w-0 flex-1"><p class="text-sm font-semibold text-text-primary">{{ movement.label }}</p><p class="mt-0.5 text-xs leading-5 text-text-muted">{{ movement.productLabel }}</p></div>
+        <div class="shrink-0 text-right"><p class="text-sm font-semibold tabular-nums" [ngClass]="movement.type === 'in' ? 'text-positive' : 'text-brand'">{{ movement.sign }}{{ movement.units }} units</p><time [attr.datetime]="movement.at" class="mt-1 block text-xs leading-5 text-text-muted">{{ movement.at | date:'MMM d, h:mm a':'+0630' }}</time></div>
       </li>
     </ul>
   </section>

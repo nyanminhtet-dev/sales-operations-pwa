@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BOOTH_STOCK_MOCK } from '../config/booth-stock.mock';
+import { BOOTH_STOCK_MOCK, BOOTH_STOCK_MOVEMENTS } from '../config/booth-stock.mock';
 
 @Component({
   selector: 'app-booth-stock',
   templateUrl: './booth-stock.component.html',
+  styleUrls: ['./booth-stock.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoothStockComponent {
@@ -14,21 +15,7 @@ export class BoothStockComponent {
   readonly lowStockItems: any[] = this.variants
     .filter((item: any) => item.available < this.demo.lowStockThreshold)
     .sort((a: any, b: any) => a.available - b.available);
-  readonly movements: any[] = this.demo.movements.map((movement: any) => {
-    const presentation: any = {
-      out: { label: 'Checked out', icon: 'arrow-up-right', sign: '+', style: 'text-brand bg-brand-soft' },
-      in: { label: 'Checked in', icon: 'arrow-down-right', sign: '-', style: 'text-positive bg-green-50' },
-      sold: { label: 'Sold', icon: 'shopping-cart', sign: '-', style: 'text-brand bg-brand-soft' },
-    };
-    return {
-      ...movement, ...presentation[movement.type],
-      units: movement.lines.reduce((sum: number, line: any) => sum + line.units, 0),
-      productLabel: movement.lines.map((line: any) => {
-        const item = this.variants.find((variant: any) => variant.id === line.variantId);
-        return `${item.name} - ${item.variant}`;
-      }).join(' · '),
-    };
-  }).sort((a: any, b: any) => b.at.localeCompare(a.at));
+  readonly movements: any[] = BOOTH_STOCK_MOVEMENTS;
   readonly soldToday = this.activityUnits('sold');
   readonly checkedOutToday = this.activityUnits('out');
   readonly failedImages = new Set<string>();

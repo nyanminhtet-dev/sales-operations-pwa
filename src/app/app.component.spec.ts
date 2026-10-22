@@ -107,6 +107,29 @@ describe('Application layout', () => {
     expect(activeLinks[0]?.classList.contains('is-active')).toBeTrue();
   });
 
+  it('opens stock movement history from Stock and More while selecting More', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const router = TestBed.inject(Router);
+    fixture.detectChanges();
+    await fixture.ngZone?.run(() => router.navigateByUrl('/products'));
+    await fixture.whenStable(); fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    element.querySelector<HTMLAnchorElement>('main a[href="/more/stock-movements"]')?.click();
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(router.url).toBe('/more/stock-movements');
+    expect(element.querySelector('main h1')?.textContent).toBe('Stock movement history');
+    expect(element.querySelector('nav [aria-current="page"]')?.getAttribute('href')).toBe('/more');
+    expect(element.querySelector('app-header')).toBeNull();
+    element.querySelector<HTMLAnchorElement>('main a[href="/more"]')?.click();
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(router.url).toBe('/more');
+    expect(element.querySelector('main a[href="/more/stock-movements"]')?.textContent).toContain('Stock movement history');
+    await fixture.ngZone?.run(() => router.navigateByUrl('/more/stock-movements?preview=true#main-content'));
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(element.querySelector('nav [aria-current="page"]')?.getAttribute('href')).toBe('/more');
+    expect(element.querySelectorAll('app-stock-movement-history li').length).toBe(3);
+  });
+
   it('keeps the decorative Home background with query parameters and a fragment', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const router = TestBed.inject(Router);

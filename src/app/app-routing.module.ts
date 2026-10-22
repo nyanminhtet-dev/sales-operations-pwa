@@ -11,9 +11,11 @@ const routes: Routes = [
     title: 'More',
     relatedPages: [
       { path: '/history', label: 'History', icon: 'history' },
+      { path: '/more/stock-movements', label: 'Stock movement history', icon: 'box' },
       { path: '/returns', label: 'Returns', icon: 'rotate-ccw' },
     ],
   }, title: 'More | PK Counter' },
+  { path: 'more/stock-movements', loadChildren: () => import('./features/booth-stock/stock-movement-history.module').then(module => module.StockMovementHistoryModule), data: { header: 'feature' } },
   { path: 'returns', component: LayoutPreviewComponent, data: { title: 'Returns', relatedPages: [{ path: '/more', label: 'Back to More' }] }, title: 'Returns | PK Counter' },
   { path: 'history', component: LayoutPreviewComponent, data: { title: 'History', relatedPages: [{ path: '/more', label: 'Back to More' }] }, title: 'History | PK Counter' },
   { path: '**', redirectTo: 'home' },

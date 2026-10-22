@@ -47,7 +47,7 @@ describe('Floating bottom navigation', () => {
 
   it('tracks router navigation and redirects without requiring a tap', async () => {
     create();
-    for (const [url, index] of [['/more', 3], ['/history', 3], ['/returns?preview=true#main-content', 3], ['/sales?source=preview#main-content', 1], ['/unknown', 0]] as const) {
+    for (const [url, index] of [['/more', 3], ['/more/stock-movements?preview=true#main-content', 3], ['/history', 3], ['/returns?preview=true#main-content', 3], ['/sales?source=preview#main-content', 1], ['/unknown', 0]] as const) {
       await navigate(url);
       finishSlide();
       expect(Number(gsap.getProperty(indicator(), 'xPercent'))).toBe(index * 100);

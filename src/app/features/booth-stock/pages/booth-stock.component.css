@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Fill the scroll viewport, including the shell's bottom navigation clearance.
+   Scoping the layer to this component keeps every other route unchanged. */
+:host::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #fff;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)),
+    url('../../../../assets/images/booth-stock-background.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}

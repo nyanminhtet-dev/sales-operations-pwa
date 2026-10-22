@@ -18,3 +18,20 @@ export const BOOTH_STOCK_MOCK: any = {
     { id: 'movement-sale', type: 'sold', at: '2026-10-22T09:30:00+06:30', lines: [{ variantId: 'cap-black', units: 4 }, { variantId: 'tee-white', units: 8 }] },
   ],
 };
+
+// Shared display projection for the Stock preview and its full history page.
+export const BOOTH_STOCK_MOVEMENTS: any[] = BOOTH_STOCK_MOCK.movements.map((movement: any) => {
+  const presentation: any = {
+    out: { label: 'Checked out', icon: 'arrow-up-right', sign: '+', style: 'text-brand bg-brand-soft' },
+    in: { label: 'Checked in', icon: 'arrow-down-right', sign: '-', style: 'text-positive bg-green-50' },
+    sold: { label: 'Sold', icon: 'shopping-cart', sign: '-', style: 'text-brand bg-brand-soft' },
+  };
+  return {
+    ...movement, ...presentation[movement.type],
+    units: movement.lines.reduce((sum: number, line: any) => sum + line.units, 0),
+    productLabel: movement.lines.map((line: any) => {
+      const item = BOOTH_STOCK_MOCK.variants.find((variant: any) => variant.id === line.variantId);
+      return `${item.name} - ${item.variant}`;
+    }).join(' · '),
+  };
+}).sort((a: any, b: any) => b.at.localeCompare(a.at));

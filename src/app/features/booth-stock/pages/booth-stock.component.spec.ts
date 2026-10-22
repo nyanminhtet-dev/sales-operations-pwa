@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../../shared/shared.module';
+import { RouterTestingModule } from '@angular/router/testing';
 import { BoothStockComponent } from './booth-stock.component';
 import { BOOTH_STOCK_MOCK } from '../config/booth-stock.mock';
 
@@ -7,7 +8,7 @@ describe('Booth Stock static prototype', () => {
   let fixture: ComponentFixture<BoothStockComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ declarations: [BoothStockComponent], imports: [SharedModule] });
+    TestBed.configureTestingModule({ declarations: [BoothStockComponent], imports: [SharedModule, RouterTestingModule] });
     fixture = TestBed.createComponent(BoothStockComponent);
     fixture.detectChanges();
   });
@@ -70,5 +71,11 @@ describe('Booth Stock static prototype', () => {
     image.dispatchEvent(new Event('error')); fixture.detectChanges();
     expect(thumbnail?.querySelector('img')).toBeNull();
     expect(thumbnail?.querySelector('lucide-icon[name="box"]')).not.toBeNull();
+  });
+
+  it('links recent movements to their history under More', () => {
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(link.textContent).toContain('View all');
+    expect(link.getAttribute('href')).toBe('/more/stock-movements');
   });
 });

@@ -95,6 +95,7 @@ export class BottomNavigationComponent implements AfterViewInit, OnDestroy {
   }
 
   private currentIndex(): number {
+    if (this.router.isActive('/more', { ...this.activeMatchOptions, paths: 'subset' })) return 3;
     if (['/history', '/returns'].some(path => this.router.isActive(path, this.activeMatchOptions))) return 3;
     return Math.max(0, this.items.findIndex(item => this.router.isActive(item.path, this.activeMatchOptions)));
   }

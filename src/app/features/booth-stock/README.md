@@ -20,3 +20,10 @@ The former unavailable-state service and its tests have been removed.
 A real implementation still needs confirmed authenticated booth ownership,
 stock and movement contracts, reporting periods, thresholds, permissions and
 validated transfer workflows. Do not treat this fixture shape as an API contract.
+
+Recent stock movements links to /more/stock-movements, also available from More.
+StockMovementHistoryModule is a separate lazy entry within this feature, keeping
+stock display/data ownership here while More stays selected for that destination.
+Both views use BOOTH_STOCK_MOVEMENTS, the same derived fixture projection.
+Stock typography follows the existing pages: 14px row/action labels, 12px metadata,
+14px section headings (16px on larger screens), and the existing 24px page title.
