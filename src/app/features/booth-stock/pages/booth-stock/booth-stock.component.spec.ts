@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BoothStockComponent } from './booth-stock.component';
-import { BOOTH_STOCK_MOCK } from '../config/booth-stock.mock';
+import { BOOTH_STOCK_MOCK } from '../../config/booth-stock.mock';
 
 describe('Booth Stock static prototype', () => {
   let fixture: ComponentFixture<BoothStockComponent>;
@@ -52,15 +52,15 @@ describe('Booth Stock static prototype', () => {
     expect(details.hidden).toBeTrue();
   });
 
-  it('keeps both transfer actions white and never mutates mock holdings', () => {
+  it('opens Check Out and keeps Check In as a non-mutating white preview action', () => {
     const before = JSON.stringify(BOOTH_STOCK_MOCK);
-    const buttons = fixture.nativeElement.querySelectorAll('button[aria-describedby="transfer-preview"]');
-    buttons[0].click(); fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Check Out is a demo action');
-    expect(buttons[0].classList.contains('bg-surface')).toBeTrue();
-    buttons[1].click(); fixture.detectChanges();
+    const checkout: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href="/products/check-out"]');
+    expect(checkout.textContent).toContain('Check Out');
+    expect(checkout.classList.contains('bg-surface')).toBeTrue();
+    const checkin: HTMLButtonElement = fixture.nativeElement.querySelector('button[aria-describedby="transfer-preview"]');
+    checkin.click(); fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Check In is a demo action');
-    expect(buttons[1].classList.contains('bg-surface')).toBeTrue();
+    expect(checkin.classList.contains('bg-surface')).toBeTrue();
     expect(JSON.stringify(BOOTH_STOCK_MOCK)).toBe(before);
     expect(fixture.componentInstance.totalUnits).toBe(248);
   });
@@ -74,7 +74,7 @@ describe('Booth Stock static prototype', () => {
   });
 
   it('links recent movements to their history under More', () => {
-    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href="/more/stock-movements"]');
     expect(link.textContent).toContain('View all');
     expect(link.getAttribute('href')).toBe('/more/stock-movements');
   });

@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import {
   ArrowRight,
+  ArrowLeft,
+  Check,
+  Trash2,
+  SlidersHorizontal,
+  Info,
   ArrowDownRight,
   ArrowUpRight,
   Box,
@@ -36,6 +41,11 @@ import { BoxSolid, MoreGridSolid, HouseSolid, ShoppingCartSolid } from './naviga
       HouseSolid,
       ShoppingCartSolid,
       ArrowRight,
+      ArrowLeft,
+      Check,
+      Trash2,
+      SlidersHorizontal,
+      Info,
       ArrowDownRight,
       ArrowUpRight,
       Box,

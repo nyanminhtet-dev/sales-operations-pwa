@@ -1,7 +1,7 @@
 <section aria-labelledby="stock-title" class="space-y-3 px-4 pt-5 sm:px-6 sm:pt-6">
   <header class="flex flex-wrap items-center justify-between gap-3">
     <div>
-      <h1 id="stock-title" class="text-2xl font-bold tracking-tight text-text-primary">Stock</h1>
+      <h1 id="stock-title" class="text-xl font-bold tracking-tight text-text-primary">Stock</h1>
       <p class="mt-0.5 text-xs text-text-muted">My booth inventory</p>
     </div>
     <span class="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs text-text-primary">
@@ -43,11 +43,11 @@
     <h2 id="stock-actions-title" class="text-sm font-semibold text-text-primary">Stock actions</h2>
     <p class="mt-0.5 text-xs text-text-muted">Transfer stock with the shared pool</p>
     <div class="mt-3 grid grid-cols-2 gap-2">
-      <button type="button" (click)="previewTransfer('out')" aria-describedby="transfer-preview"
+      <a routerLink="/products/check-out" aria-describedby="transfer-preview"
         class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
         <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="box" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-sm font-semibold text-text-primary">Check Out</span></span>
         <span class="mt-1.5 block text-xs leading-snug text-text-muted">Receive stock from shared pool</span>
-      </button>
+      </a>
       <button type="button" (click)="previewTransfer('in')" aria-describedby="transfer-preview"
         class="min-h-[88px] rounded-xl border border-border bg-surface p-3 text-left hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
         <span class="flex items-center gap-1.5 text-brand"><lucide-icon name="rotate-ccw" [size]="18" aria-hidden="true" class="shrink-0" /><span class="text-sm font-semibold text-text-primary">Check In</span></span>

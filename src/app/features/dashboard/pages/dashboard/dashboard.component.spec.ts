@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 import { gsap } from 'gsap';
 import { DashboardComponent } from './dashboard.component';
-import { DashboardDataService } from '../services/dashboard-data.service';
-import { DashboardModule } from '../dashboard.module';
+import { DashboardDataService } from '../../services/dashboard-data.service';
+import { DashboardModule } from '../../dashboard.module';
 
 describe('DashboardComponent', () => {
   let fixture: ComponentFixture<DashboardComponent>;

@@ -1,7 +1,7 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { gsap } from 'gsap';
 import { catchError, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
-import { DashboardDataService } from '../services/dashboard-data.service';
+import { DashboardDataService } from '../../services/dashboard-data.service';
 
 type DashboardState =
   | { readonly status: 'loading'; readonly data?: undefined }

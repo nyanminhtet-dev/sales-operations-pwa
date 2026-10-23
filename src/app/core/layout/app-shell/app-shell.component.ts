@@ -12,19 +12,21 @@ export class AppShellComponent {
   readonly layout$ = this.router.events.pipe(
     filter(event => event instanceof NavigationEnd),
     startWith(null),
-    map(() => ({ featureHeader: this.hasFeatureHeader() })),
+    map(() => this.routeLayout()),
   );
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {}
 
-  private hasFeatureHeader(): boolean {
+  private routeLayout(): any {
     let route: ActivatedRoute | null = this.activatedRoute.root;
     let featureHeader = false;
+    let showNavigation = true;
     while (route) {
       if (route.snapshot.data['header']) featureHeader = route.snapshot.data['header'] === 'feature';
+      if (route.snapshot.data['hideNavigation'] !== undefined) showNavigation = !route.snapshot.data['hideNavigation'];
       route = route.firstChild;
     }
-    return featureHeader;
+    return { featureHeader, showNavigation };
   }
 
   get contentLink(): string {

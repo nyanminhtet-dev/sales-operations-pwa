@@ -145,6 +145,26 @@ describe('Application layout', () => {
     expect(element.querySelector('header a')?.getAttribute('aria-label')).toBe('PK Counter home');
   });
 
+  it('opens Check Out from Stock without duplicate navigation and restores Stock on return', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const router = TestBed.inject(Router);
+    fixture.detectChanges();
+    await fixture.ngZone?.run(() => router.navigateByUrl('/products'));
+    await fixture.whenStable(); fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    element.querySelector<HTMLAnchorElement>('a[href="/products/check-out"]')?.click();
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(router.url).toBe('/products/check-out');
+    expect(element.querySelector('app-check-out h1')?.textContent).toBe('Check Out');
+    expect(element.querySelector('app-header')).toBeNull();
+    expect(element.querySelector('app-bottom-navigation')).toBeNull();
+    expect(element.querySelectorAll('app-check-out footer').length).toBe(0);
+    element.querySelector<HTMLButtonElement>('app-check-out button[aria-label="Back to Stock"]')?.click();
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(router.url).toBe('/products');
+    expect(element.querySelector('nav [aria-current="page"]')?.getAttribute('aria-label')).toBe('Stock');
+  });
+
   for (const path of ['/', '/unknown']) {
     it(`redirects ${path} to Home`, async () => {
       const fixture = TestBed.createComponent(AppComponent);

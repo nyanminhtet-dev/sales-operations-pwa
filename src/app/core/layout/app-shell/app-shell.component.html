@@ -9,12 +9,12 @@
     #content (scroll)="headerScrolled = content.scrollTop > 0"
     [ngClass]="layout.featureHeader ? '' : '-mt-[calc(4.5rem+1px+env(safe-area-inset-top))] pt-[calc(4.5rem+1px+env(safe-area-inset-top))]'"
     class="relative z-0 row-start-2 min-h-0 overflow-y-auto overscroll-y-contain pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] scroll-pb-[calc(5.5rem+env(safe-area-inset-bottom))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand">
-    <div [ngClass]="layout.featureHeader ? '' : 'px-4 pt-6 sm:px-6 sm:pt-8'"
-      class="mx-auto w-full max-w-5xl pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
+    <div [ngClass]="[layout.featureHeader ? '' : 'px-4 pt-6 sm:px-6 sm:pt-8', layout.showNavigation ? 'pb-[calc(5.5rem+env(safe-area-inset-bottom))]' : '']"
+      class="mx-auto w-full max-w-5xl">
       <router-outlet />
     </div>
   </main>
   </div>
 
-  <app-bottom-navigation class="pointer-events-none fixed inset-x-0 bottom-0 z-30" />
+  <app-bottom-navigation *ngIf="layout.showNavigation" class="pointer-events-none fixed inset-x-0 bottom-0 z-30" />
 </div>

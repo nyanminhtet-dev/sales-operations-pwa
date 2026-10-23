@@ -46,6 +46,32 @@ describe('Page transitions', () => {
     fixture.destroy();
   }));
 
+  [
+    { from: '/products', to: '/products/check-out?booth=main#selection', direction: 1 },
+    { from: '/products/check-out?booth=main#selection', to: '/products', direction: -1 },
+  ].forEach(({ from, to, direction }) => {
+    it(`slides ${direction === 1 ? 'forward into' : 'back out of'} Check Out`, fakeAsync(() => {
+      const fixture = TestBed.createComponent(TransitionHostComponent);
+      fixture.detectChanges();
+      router.url = from;
+      const surface: HTMLElement = fixture.nativeElement.querySelector('[data-page-surface]');
+      events.next(new NavigationStart(1, to));
+      const snapshot: HTMLElement = fixture.nativeElement.querySelector('[data-page-snapshot]');
+      events.next(new NavigationEnd(1, to, to));
+      expect(gsap.getProperty(surface, 'xPercent')).toBe(direction * 100);
+      tick(17);
+      const timeline = gsap.getTweensOf(surface)[0]?.parent;
+      if (!timeline) throw new Error('Missing Check Out page timeline');
+      timeline.progress(0.5);
+      expect(Number(gsap.getProperty(surface, 'xPercent'))).toBeCloseTo(direction * 50, 0);
+      expect(Number(gsap.getProperty(snapshot, 'xPercent'))).toBeCloseTo(-direction * 50, 0);
+      timeline.progress(1);
+      expect(fixture.nativeElement.querySelector('[data-page-snapshot]')).toBeNull();
+      expect(surface.style.transform).toBe('');
+      fixture.destroy();
+    }));
+  });
+
   it('reverses direction, cancels rapid transitions and handles failed navigation', fakeAsync(() => {
     const fixture = TestBed.createComponent(TransitionHostComponent);
     fixture.detectChanges();

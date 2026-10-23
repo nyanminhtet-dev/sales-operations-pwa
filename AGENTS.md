@@ -260,7 +260,7 @@ features/<feature-name>/
 ```
 
 Rules:
-- Put every routed/page-level component in that feature's `pages/` folder. Do not place routed pages directly at the feature root.
+- Put every routed/page-level component in its own named folder under that feature's `pages/` folder. Keep its TypeScript, HTML, stylesheet, and tests together, for example `pages/booth-stock/booth-stock.component.ts`, `.html`, `.css`, and `.spec.ts`. Do not place page component files directly under `pages/` or at the feature root.
 - Put feature-specific services in that feature's `services/` folder. API communication and business/data coordination belong in services, not in templates or scattered across page components.
 - Put reusable only-within-this-feature UI in `components/`; put truly generic UI shared across features in `src/app/shared/`.
 - Do not create `models/` folders or model files. Use `any` for feature data flow instead of introducing data models or interfaces.
@@ -339,3 +339,119 @@ Tailwind CSS is the primary styling system for this project. Prefer Tailwind uti
 - Do not invent live data, API integrations, authentication behavior, or location-switching behavior for a visual layout milestone. Use only the minimum placeholder content required to verify the shell.
 - Verify the Angular build after making changes and report any unresolved errors rather than claiming success without checking.
 
+
+## Angular Page Folder Organization — STRICT RULE
+
+This rule is mandatory for all Angular features and pages. Do not deviate from it.
+
+### 1. One Page, One Folder
+
+Every page component MUST have its own dedicated folder inside the feature's `pages/` directory.
+
+**Required structure:**
+
+```text
+pages/
+├── booth-stock/
+│   ├── booth-stock.component.ts
+│   ├── booth-stock.component.html
+│   ├── booth-stock.component.css
+│   └── booth-stock.component.spec.ts
+├── check-out/
+│   ├── check-out.component.ts
+│   ├── check-out.component.html
+│   ├── check-out.component.css
+│   └── check-out.component.spec.ts
+└── stock-movement-history/
+    ├── stock-movement-history.component.ts
+    ├── stock-movement-history.component.html
+    ├── stock-movement-history.component.css
+    └── stock-movement-history.component.spec.ts
+```
+
+### 2. No Page Files Directly Inside `pages/`
+
+NEVER place page component files directly inside the `pages/` directory.
+
+Forbidden:
+
+```text
+pages/
+├── booth-stock.component.ts
+├── booth-stock.component.html
+├── check-out.component.ts
+├── check-out.component.html
+└── stock-movement-history.component.ts
+```
+
+Every page MUST be grouped into its own named folder.
+
+### 3. Keep Page Files Together
+
+For each page, keep its related files in the same directory:
+
+- Component TypeScript
+- Component HTML template
+- Component CSS stylesheet
+- Component spec/test file, when present or required by project conventions
+- Other page-specific files, if necessary
+
+Use the existing component naming convention consistently.
+
+### 4. Component Styles Must Stay Local
+
+Each page MUST use its own component stylesheet. Do not move page-specific styles into global stylesheets or another page's CSS.
+
+Follow the project's existing Angular component metadata conventions and preserve the correct relative paths for `templateUrl` and `styleUrls`.
+
+### 5. Components Are Not Pages
+
+Keep reusable UI components inside the feature's `components/` directory, organized into dedicated subfolders when appropriate.
+
+For example:
+
+```text
+booth-stock/
+├── components/
+│   ├── product-card/
+│   │   ├── product-card.component.ts
+│   │   ├── product-card.component.html
+│   │   └── product-card.component.css
+│   └── ...
+└── pages/
+    ├── booth-stock/
+    └── check-out/
+```
+
+Do not put reusable components inside `pages/` simply because a page uses them.
+
+### 6. Mandatory Rules When Creating or Refactoring Pages
+
+Before creating or modifying a page:
+
+1. Inspect the existing feature folder structure.
+2. Create or reuse the page's dedicated folder.
+3. Keep all page-specific files inside that folder.
+4. Update imports, lazy-loaded routes, module declarations, tests, and relative file references affected by any file move.
+5. Follow the existing project conventions for Angular modules and routing.
+6. Never leave duplicate or obsolete page files after refactoring.
+
+### 7. Existing Violations Must Be Fixed When Working in That Feature
+
+If a feature contains page component files directly inside `pages/`, move them into their respective page folders when implementing or refactoring that feature.
+
+Update all affected references and verify that the application still builds.
+
+Do not perform unrelated, large-scale file reorganizations outside the scope of the task.
+
+### 8. Final Verification
+
+Before completing a task, verify that:
+
+- Every page has its own folder.
+- No page component files remain directly inside `pages/`.
+- Component templates and styles resolve correctly.
+- Angular routes and module declarations still work.
+- The available build and relevant tests pass.
+
+**Priority:** This organization rule is mandatory. Convenience, speed, or generating fewer folders is not a valid reason to violate it.

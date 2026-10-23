@@ -1,0 +1,61 @@
+:host {
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Keep the page background local; do not depend on another page's stylesheet. */
+:host::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.65), #fff 24rem),
+    url('../../../../../assets/images/booth-stock-background.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.checkout-page {
+  padding-bottom: calc(var(--checkout-action-height, 0px) + 1.5rem + env(safe-area-inset-bottom));
+}
+
+.journey-connector {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% + 0.5rem);
+  height: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: theme('colors.border');
+}
+
+.checkout-header-glass {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .checkout-header-glass { background-color: theme('colors.surface'); }
+}
+
+.journey-fill {
+  display: block;
+  height: 100%;
+  background: theme('colors.brand.DEFAULT');
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms ease-in-out;
+}
+
+.journey-fill.is-complete {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-fill { transition: none; }
+}

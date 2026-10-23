@@ -1,0 +1,54 @@
+<section aria-label="Product details" class="space-y-5">
+  <div class="flex items-start gap-3">
+    <div class="relative flex aspect-square min-w-0 flex-1 items-center justify-center overflow-hidden rounded-2xl border border-border bg-page">
+      <img *ngIf="image && !failedImages.has(image); else noImage" [src]="image" [alt]="product.imageAlt || product.name + ' product photo'" decoding="async" (error)="failedImages.add(image)" class="h-full w-full object-contain" />
+      <ng-template #noImage><span class="flex flex-col items-center gap-2 p-6 text-sm text-text-muted"><lucide-icon name="box" [size]="48" aria-hidden="true" />Image unavailable</span></ng-template>
+      <span *ngIf="product.images?.length > 1" class="absolute bottom-2 right-2 rounded-lg bg-text-primary/70 px-2 py-1 text-xs text-white">{{ imageIndex + 1 }}/{{ product.images.length }}</span>
+    </div>
+    <div *ngIf="product.images?.length > 1" role="group" aria-label="Product images" class="flex w-16 shrink-0 flex-col gap-2 sm:w-20">
+      <button *ngFor="let photo of product.images; let index = index" type="button" (click)="imageIndex = index" [attr.aria-label]="'Show product image ' + (index + 1)" [attr.aria-pressed]="imageIndex === index" class="flex aspect-square items-center justify-center overflow-hidden rounded-xl border bg-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand" [ngClass]="imageIndex === index ? 'border-brand ring-1 ring-brand' : 'border-border'">
+        <img *ngIf="!failedImages.has(photo); else thumbnailFallback" [src]="photo" alt="" loading="lazy" decoding="async" (error)="failedImages.add(photo)" class="h-full w-full object-cover" />
+        <ng-template #thumbnailFallback><lucide-icon name="box" [size]="24" aria-hidden="true" /></ng-template>
+      </button>
+    </div>
+  </div>
+  <p class="text-xs text-text-muted">Illustrative sample photography. Images are not a preview of the selected color or official PK Counter branding.</p>
+  <div class="flex flex-wrap items-start justify-between gap-2">
+    <div class="min-w-0"><h2 class="text-xl font-bold tracking-tight">{{ product.name }}</h2><p *ngIf="product.description" class="mt-1 text-sm text-text-muted">{{ product.description }}</p></div>
+    <p class="text-sm font-semibold" *ngIf="catalog.hasPrice(variant); else unknownPrice">{{ variant.salePrice | number }} MMK</p>
+    <ng-template #unknownPrice><p class="text-xs text-text-muted">Sale price unavailable</p></ng-template>
+  </div>
+  <fieldset *ngIf="colors.length" class="space-y-2">
+    <legend class="text-sm font-semibold">Color</legend>
+    <div class="flex flex-wrap gap-2"><button *ngFor="let option of colors" type="button" (click)="chooseColor(option)" [attr.aria-pressed]="color === option" class="min-h-[44px] rounded-xl border px-4 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand" [ngClass]="color === option ? 'border-brand bg-brand-soft font-semibold text-brand' : 'border-border bg-surface'">{{ option }}</button></div>
+  </fieldset>
+  <fieldset *ngIf="sizes.length" class="space-y-2">
+    <legend class="text-sm font-semibold">Size</legend>
+    <div class="flex flex-wrap gap-2"><button *ngFor="let option of sizes" type="button" (click)="chooseSize(option)" [disabled]="!sizeExists(option)" [attr.aria-pressed]="size === option" class="min-h-[44px] min-w-[48px] rounded-xl border px-4 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:bg-page disabled:text-text-muted disabled:line-through" [ngClass]="size === option ? 'border-brand bg-brand font-semibold text-white' : 'border-border bg-surface'">{{ option }}</button></div>
+  </fieldset>
+  <fieldset *ngIf="candidates.length > 1" class="space-y-2">
+    <legend class="text-sm font-semibold">Choose an exact variant</legend>
+    <div class="flex flex-wrap gap-2"><button *ngFor="let item of candidates" type="button" (click)="chooseVariant(item.id)" [attr.aria-pressed]="variant?.id === item.id" class="min-h-[44px] break-all rounded-xl border border-border px-3 text-sm focus-visible:ring-2 focus-visible:ring-brand" [class.bg-brand-soft]="variant?.id === item.id">{{ item.sku }}</button></div>
+  </fieldset>
+  <ng-container *ngIf="variant; else noVariant">
+    <dl class="space-y-2 rounded-xl bg-brand-soft p-4 text-sm">
+      <div class="flex justify-between gap-3"><dt class="text-text-muted">SKU</dt><dd class="break-all text-right font-medium">{{ variant.sku }}</dd></div>
+      <div class="flex justify-between gap-3"><dt class="text-text-muted">Sale price</dt><dd class="text-right">{{ catalog.hasPrice(variant) ? (variant.salePrice | number) + ' MMK' : 'Unavailable' }}</dd></div>
+      <div class="flex justify-between gap-3"><dt class="text-text-muted">Shared pool stock</dt><dd class="font-semibold">{{ variant.available | number }} units</dd></div>
+      <div *ngIf="variant.barcode" class="flex justify-between gap-3"><dt class="text-text-muted">Barcode</dt><dd class="break-all text-right">{{ variant.barcode }}</dd></div>
+    </dl>
+    <p *ngIf="!catalog.canReceive(variant)" role="status" class="text-sm text-text-muted">{{ variant.available === 0 ? 'Out of stock in the shared pool.' : 'This variant is unavailable.' }}</p>
+    <p *ngIf="selectedQuantities[variant.id]" class="text-xs text-text-muted">{{ selectedQuantities[variant.id] }} already selected · {{ remaining }} more available</p>
+  </ng-container>
+  <ng-template #noVariant><p role="status" class="rounded-xl border border-border p-4 text-sm text-text-muted">{{ product.variants.length ? 'Select an exact available variant.' : 'No variants available for this product.' }}</p></ng-template>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <label for="checkout-detail-quantity" class="text-sm font-semibold">Quantity</label>
+    <div class="flex items-center gap-2">
+      <button type="button" (click)="adjust(-1)" [disabled]="quantity.invalid || quantity.value <= 1" aria-label="Decrease quantity" class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-soft text-brand focus-visible:ring-2 focus-visible:ring-brand disabled:text-text-muted"><lucide-icon name="minus" [size]="20" aria-hidden="true" /></button>
+      <input id="checkout-detail-quantity" type="number" inputmode="numeric" min="1" [max]="remaining" step="1" [formControl]="quantity" [attr.aria-invalid]="quantity.invalid" aria-describedby="checkout-detail-quantity-error" class="h-11 w-16 rounded-xl border border-border text-center text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand" />
+      <button type="button" (click)="adjust(1)" [disabled]="quantity.invalid || quantity.value >= remaining" aria-label="Increase quantity" class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-white focus-visible:ring-2 focus-visible:ring-brand disabled:bg-border disabled:text-text-muted"><lucide-icon name="plus" [size]="20" aria-hidden="true" /></button>
+    </div>
+  </div>
+  <p id="checkout-detail-quantity-error" *ngIf="quantity.invalid && quantity.touched" role="alert" class="text-xs text-orange-800">Enter a whole quantity from 1 to {{ remaining }}.</p>
+  <button type="button" (click)="add()" [disabled]="!canAdd" class="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted"><lucide-icon name="shopping-cart" [size]="20" aria-hidden="true" />Add to Checkout</button>
+</section>

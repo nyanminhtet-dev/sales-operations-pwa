@@ -1,8 +1,8 @@
 import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { gsap } from 'gsap';
-import { SalesCatalogueService } from '../services/sales-catalogue.service';
-import { SalesPurchasesModule } from '../sales-purchases.module';
+import { SalesCatalogueService } from '../../services/sales-catalogue.service';
+import { SalesPurchasesModule } from '../../sales-purchases.module';
 import { SalesComponent } from './sales.component';
 
 describe('Sales header', () => {

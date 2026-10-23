@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { gsap } from 'gsap';
-import { SalesPurchasesModule } from '../sales-purchases.module';
+import { SalesPurchasesModule } from '../../sales-purchases.module';
 import { ProductSelectionSheetComponent } from './product-selection-sheet.component';
-import { SalesProductCardComponent } from './sales-product-card.component';
+import { SalesProductCardComponent } from '../sales-product-card/sales-product-card.component';
 
 describe('Product selection', () => {
   beforeEach(() => TestBed.configureTestingModule({ imports: [SalesPurchasesModule] }));

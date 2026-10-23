@@ -1,7 +1,7 @@
 import { AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { gsap } from 'gsap';
 import { Subject, takeUntil } from 'rxjs';
-import { SalesCatalogueService } from '../services/sales-catalogue.service';
+import { SalesCatalogueService } from '../../services/sales-catalogue.service';
 
 @Component({
   selector: 'app-sales',

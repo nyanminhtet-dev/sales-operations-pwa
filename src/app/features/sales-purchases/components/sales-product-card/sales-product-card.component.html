@@ -5,8 +5,8 @@
     [class.w-full]="view === 'grid'" [class.flex]="view === 'list'" [class.items-center]="view === 'list'">
     <span class="flex shrink-0 items-center justify-center bg-page text-text-muted"
       [ngClass]="view === 'grid' ? 'aspect-square w-full' : 'm-2 h-16 w-16 rounded-lg'">
-      <img *ngIf="product.imageUrl && !imageFailed; else placeholder" [src]="product.imageUrl" alt="" loading="lazy"
-        (error)="imageFailed = true" class="h-full w-full object-contain" />
+      <img *ngIf="product.imageUrl && !imageFailed; else placeholder" [src]="product.imageUrl" [alt]="product.imageAlt || product.name" loading="lazy" decoding="async"
+        (error)="imageFailed = true" class="h-full w-full object-cover" />
       <ng-template #placeholder>
         <span class="flex flex-col items-center gap-1" aria-hidden="true">
           <lucide-icon name="box" [size]="32" [strokeWidth]="1.25" />

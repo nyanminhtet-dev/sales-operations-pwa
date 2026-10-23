@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 
 @Directive({ selector: '[appPageTransition]' })
 export class PageTransitionDirective implements OnInit, OnDestroy {
-  private readonly pageOrder = ['home', 'sales', 'products', 'more', 'more/stock-movements', 'history', 'returns'];
+  private readonly pageOrder = ['home', 'sales', 'products', 'products/check-out', 'more', 'more/stock-movements', 'history', 'returns'];
   private subscription?: Subscription;
   private preference?: MediaQueryList;
   private context?: gsap.Context;

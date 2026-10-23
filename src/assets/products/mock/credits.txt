@@ -1,7 +1,7 @@
 Sample product photography - PK Counter demo catalogue
 
 These are photographs of representative products, not actual PK merchandise.
-All images were proportionally resized and centered on white 600 x 600 canvases,
+The local JPEG images below were proportionally resized and centered on white 600 x 600 canvases,
 then encoded as JPEG. No product branding was added or altered.
 The licenses below apply to the respective image assets, not application code.
 
@@ -47,3 +47,30 @@ License: https://creativecommons.org/licenses/by-sa/4.0/
 This resized and padded image remains available under CC BY-SA 4.0.
 
 The creators and pictured brands do not endorse this application.
+
+Remote Unsplash sample photographs used by Sales and Check Out
+These are representative photos, not official PK Counter merchandise or exact variant-color previews.
+Direct image URLs were opened and visually verified on 23 October 2026.
+
+T-shirt - Haryo Setyadi
+Source: https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4
+Image: https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&crop=bottom&w=900&h=900&q=80
+
+Cap - Mediamodifier
+Source: https://unsplash.com/photos/white-baseball-cap-on-white-surface-t8HiP3e5abg
+Image: https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&crop=center&w=900&h=900&q=80
+
+Hoodie - Mediamodifier
+Source: https://unsplash.com/photos/kJXGTOY1wLQ
+Image: https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&crop=center&w=900&h=900&q=80
+
+Keychain - Muhammet SAIN
+Source: https://unsplash.com/photos/a-keychain-with-a-leather-tag-attached-to-it-7ApjiItz0co
+Image: https://images.unsplash.com/photo-1676488690948-8020c4851c50?auto=format&fit=crop&crop=center&w=900&h=900&q=80
+
+Tote bag - Simply Mersah
+Source: https://unsplash.com/photos/a-brown-bag-sitting-on-top-of-a-white-table-iFSsBIHXFR8
+Image: https://images.unsplash.com/photo-1732963574895-f4b6af2dec06?auto=format&fit=crop&crop=center&w=900&h=900&q=80
+
+Unsplash license information: https://unsplash.com/license
+The existing local light-stick photo remains in use; local asset attributions above are retained.

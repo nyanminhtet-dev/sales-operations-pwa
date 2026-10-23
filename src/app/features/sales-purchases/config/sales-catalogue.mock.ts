@@ -1,5 +1,5 @@
 // Display-only fixtures. These do not define an API contract, live prices, or location stock.
-// Local sample product photographs, not actual PK merchandise. Credits: assets/products/mock/credits.txt.
+// Parent-owned demo photo galleries. Unsplash credits: booth-stock/README.md; local light-stick credit: assets/products/mock/credits.txt.
 export const SALES_CATALOGUE_MOCK: any[] = [
   {
     id: 'demo-cap',
@@ -9,7 +9,8 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     category: 'Accessories',
     price: 25000,
     stock: 42,
-    imageUrl: 'assets/products/mock/pk-cap.jpg',
+    images: ['https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&crop=center&w=900&h=900&q=80'],
+    imageAlt: 'Unbranded white baseball cap on a white background',
   },
   {
     id: 'demo-shirt',
@@ -20,7 +21,8 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     price: 35000,
     stock: 18,
     variants: ['Small', 'Medium', 'Large'],
-    imageUrl: 'assets/products/mock/pk-shirt.jpg',
+    images: ['https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&crop=bottom&w=900&h=900&q=80'],
+    imageAlt: 'Plain white T-shirt hanging against a textured gray wall',
   },
   {
     id: 'demo-hoodie',
@@ -31,7 +33,8 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     price: 65000,
     stock: 12,
     variants: ['Medium', 'Large'],
-    imageUrl: 'assets/products/mock/pk-hoodie.jpg',
+    images: ['https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&crop=center&w=900&h=900&q=80'],
+    imageAlt: 'Plain white pullover hoodie on a hanger',
   },
   {
     id: 'demo-light',
@@ -41,7 +44,8 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     category: 'Collectibles',
     price: 45000,
     stock: 30,
-    imageUrl: 'assets/products/mock/pk-light-stick.jpg',
+    images: ['assets/products/mock/pk-light-stick.jpg'],
+    imageAlt: 'Assorted handheld light sticks',
   },
   {
     id: 'demo-keychain',
@@ -51,7 +55,8 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     category: 'Accessories',
     price: 12000,
     stock: 50,
-    imageUrl: 'assets/products/mock/pk-keychain.jpg',
+    images: ['https://images.unsplash.com/photo-1676488690948-8020c4851c50?auto=format&fit=crop&crop=center&w=900&h=900&q=80'],
+    imageAlt: 'Brown leather keychain with a metal ring',
   },
   {
     id: 'demo-tote',
@@ -61,6 +66,7 @@ export const SALES_CATALOGUE_MOCK: any[] = [
     category: 'Others',
     price: 18000,
     stock: 0,
-    imageUrl: 'assets/products/mock/pk-tote.jpg',
+    images: ['https://images.unsplash.com/photo-1732963574895-f4b6af2dec06?auto=format&fit=crop&crop=center&w=900&h=900&q=80'],
+    imageAlt: 'Brown canvas tote bag beside a window',
   },
 ];

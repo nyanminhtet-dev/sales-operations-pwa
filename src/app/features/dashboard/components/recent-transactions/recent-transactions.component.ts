@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { DashboardTransaction } from '../../models/dashboard.model';
 
 @Component({
   selector: 'app-recent-transactions',
@@ -7,7 +6,7 @@ import { DashboardTransaction } from '../../models/dashboard.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentTransactionsComponent implements OnChanges {
-  @Input() transactions: readonly DashboardTransaction[] = [];
+  @Input() transactions: any[] = [];
   rows: any[] = [];
 
   ngOnChanges(): void {

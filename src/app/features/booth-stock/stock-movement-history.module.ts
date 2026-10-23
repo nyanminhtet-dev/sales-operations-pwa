@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
-import { StockMovementHistoryComponent } from './pages/stock-movement-history.component';
+import { StockMovementHistoryComponent } from './pages/stock-movement-history/stock-movement-history.component';
 
 /** Lazy entry under More; stock data remains owned by the Booth Stock feature. */
 @NgModule({

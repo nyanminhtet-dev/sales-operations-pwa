@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule } from '../../../shared/shared.module';
-import { BOOTH_STOCK_MOVEMENTS } from '../config/booth-stock.mock';
+import { SharedModule } from '../../../../shared/shared.module';
+import { BOOTH_STOCK_MOVEMENTS } from '../../config/booth-stock.mock';
 import { StockMovementHistoryComponent } from './stock-movement-history.component';
 
 describe('Stock movement history', () => {

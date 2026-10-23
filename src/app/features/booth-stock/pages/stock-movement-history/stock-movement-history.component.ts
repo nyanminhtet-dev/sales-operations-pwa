@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BOOTH_STOCK_MOCK, BOOTH_STOCK_MOVEMENTS } from '../config/booth-stock.mock';
+import { BOOTH_STOCK_MOCK, BOOTH_STOCK_MOVEMENTS } from '../../config/booth-stock.mock';
 
 @Component({
   selector: 'app-stock-movement-history',

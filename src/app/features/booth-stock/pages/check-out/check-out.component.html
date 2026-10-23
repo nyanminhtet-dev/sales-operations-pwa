@@ -1,0 +1,154 @@
+<div class="checkout-page">
+  <header class="sticky top-0 z-20 bg-transparent px-4 pb-2 pt-[calc(0.75rem+env(safe-area-inset-top))] sm:px-6">
+    <div aria-hidden="true" [class.opacity-100]="headerScrolled" [class.opacity-0]="!headerScrolled" class="checkout-header-glass pointer-events-none absolute inset-0 border-b border-border bg-surface/75 backdrop-blur-md transition-opacity duration-500 ease-out motion-reduce:transition-none"></div>
+    <div class="relative flex flex-wrap items-center gap-2">
+      <button type="button" (click)="back()" [attr.aria-label]="detailProduct ? 'Back to products' : (step === 'select' || step === 'success' ? 'Back to Stock' : 'Back to previous step')" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+        <lucide-icon name="arrow-left" [size]="21" aria-hidden="true" />
+      </button>
+      <div class="min-w-0 flex-1">
+        <h1 #pageTitle tabindex="-1" class="text-lg font-bold tracking-tight text-text-primary focus:outline-none">{{ detailProduct ? 'Product Details' : 'Check Out' }}</h1>
+        <p *ngIf="!detailProduct" class="mt-0.5 text-xs text-text-muted">Receive stock from shared pool</p>
+      </div>
+      <label *ngIf="!detailProduct" class="flex max-w-full items-center gap-1 rounded-full border border-border bg-surface px-2 py-2 text-brand">
+        <lucide-icon name="store" [size]="16" aria-hidden="true" class="shrink-0" />
+        <select aria-label="Assigned booth (demo)" [title]="demo.destination" class="min-h-[28px] max-w-[104px] bg-transparent text-xs text-text-primary focus:outline-none focus:ring-2 focus:ring-brand">
+          <option [value]="demo.destination">{{ demo.boothLabel }}</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <section aria-label="Check out workflow" class="space-y-2 px-4 pt-3 sm:px-6">
+    <p class="text-xs leading-5 text-text-muted"><span class="font-semibold text-brand">Demo only</span> · No real stock is transferred.</p>
+    <p role="status" class="sr-only">{{ step === 'success' ? 'Check out demo successful' : stages[stepIndex] + ' step' }}</p>
+    <ol *ngIf="step !== 'success' && !detailProduct" aria-label="Check out progress" class="flex items-center gap-2 rounded-xl border border-border bg-surface px-3 py-3">
+      <li *ngFor="let stage of stages; let index = index" [attr.aria-current]="stepIndex === index ? 'step' : null" class="relative flex min-w-0 flex-1 items-center justify-center text-xs" [ngClass]="stepIndex >= index ? 'font-semibold text-text-primary' : 'text-text-muted'">
+        <span *ngIf="index < stages.length - 1" aria-hidden="true" class="journey-connector"><span class="journey-fill" [class.is-complete]="stepIndex > index"></span></span><span class="relative z-10 inline-flex items-center gap-1.5 bg-surface px-1"><span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs" [ngClass]="stepIndex >= index ? 'bg-brand text-white' : 'bg-border text-text-muted'">
+          <lucide-icon *ngIf="stepIndex > index; else stepNumber" name="check" [size]="13" aria-hidden="true" />
+          <ng-template #stepNumber>{{ index + 1 }}</ng-template>
+        </span><span>{{ stage }}</span></span>
+      </li>
+    </ol>
+    <p *ngIf="validationMessage" role="alert" class="rounded-xl border border-orange-200 bg-surface p-3 text-sm text-orange-800">{{ validationMessage }}</p>
+
+    <!-- Selection-step From/To card disabled; retain the transfer details for confirmation. -->
+    <section *ngIf="step === 'confirm'" aria-label="Transfer direction" class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 shadow-sm">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand"><lucide-icon name="box" [size]="23" aria-hidden="true" /></span>
+      <div class="min-w-0 flex-1"><p class="text-xs text-text-muted">From</p><p class="mt-1 text-sm font-semibold text-text-primary">{{ demo.source }}</p></div>
+      <lucide-icon name="arrow-right" [size]="18" aria-hidden="true" class="shrink-0 text-text-muted" />
+      <div class="min-w-0 flex-1"><p class="text-xs text-text-muted">To</p><p class="mt-1 text-sm font-semibold text-text-primary">{{ demo.destination }}</p></div>
+    </section>
+
+    <p role="status" class="sr-only">{{ selectionNotice }}</p>
+    <app-check-out-product-detail *ngIf="detailProduct" [product]="detailProduct"
+      [selectedQuantities]="detailQuantities" (addSelection)="addFromDetails($event)" />
+    <ng-container [ngSwitch]="step">
+    <div [hidden]="!!detailProduct">
+      <section *ngSwitchCase="'select'" aria-label="Shared pool variants" class="space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-sm font-semibold text-text-primary">Products</h2>
+          <button type="button" (click)="clear()" [disabled]="!selected.length" class="min-h-[44px] rounded-lg px-2 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:text-text-muted">Clear all</button>
+        </div>
+        <div class="flex gap-2">
+          <div class="relative min-w-0 flex-1">
+            <span aria-hidden="true" class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"><lucide-icon name="search" [size]="18" class="block h-[18px] w-[18px]" /></span>
+            <label for="checkout-search" class="sr-only">Search products or SKU</label>
+            <input id="checkout-search" type="search" #searchInput [value]="query" (input)="query = searchInput.value" placeholder="Search products or SKU…" autocomplete="off" class="min-h-[48px] w-full rounded-xl border border-border bg-surface py-2 pl-10 pr-3 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+          </div>
+          <button type="button" (click)="filtersOpen = !filtersOpen" aria-label="Filter products" [attr.aria-expanded]="filtersOpen" aria-controls="checkout-filters" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-surface text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"><lucide-icon name="sliders-horizontal" [size]="20" aria-hidden="true" /></button>
+        </div>
+        <div id="checkout-filters" [hidden]="!filtersOpen" class="rounded-xl border border-border bg-surface px-3">
+          <label class="flex min-h-[44px] items-center gap-2 text-sm"><input type="checkbox" #availableInput [checked]="availableOnly" (change)="availableOnly = availableInput.checked" class="h-4 w-4 accent-brand" />Available stock only</label>
+        </div>
+        <div role="group" aria-label="Product categories" class="flex gap-2 overflow-x-auto pb-1">
+          <button *ngFor="let option of categories" type="button" (click)="category = option" [attr.aria-pressed]="category === option" class="min-h-[44px] shrink-0 rounded-xl border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand" [ngClass]="category === option ? 'border-brand bg-brand text-white' : 'border-border bg-surface text-text-primary'">{{ option }}</button>
+        </div>
+        <p *ngIf="catalogState === 'loading'" role="status" class="rounded-2xl border border-border bg-surface p-5 text-sm text-text-muted">Loading products…</p>
+        <div *ngIf="catalogState === 'error'" role="alert" class="rounded-2xl border border-border bg-surface p-5 text-sm"><p>Products could not be loaded.</p><button type="button" (click)="loadProducts()" class="mt-2 min-h-[44px] rounded-lg px-3 font-semibold text-brand focus-visible:ring-2 focus-visible:ring-brand">Try again</button></div>
+        <ng-container *ngIf="catalogState === 'ready'">
+          <ul *ngIf="visibleProducts.length; else emptyResults" class="space-y-2">
+            <li *ngFor="let product of visibleProducts; trackBy: trackById">
+              <button type="button" (click)="openProduct(product)" [attr.data-product-id]="product.id" [attr.aria-label]="'View ' + product.name" class="flex min-h-[88px] w-full items-center gap-3 rounded-2xl border border-border bg-surface p-3 text-left shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+                <app-stock-variant-thumbnail [variant]="product" />
+                <span class="min-w-0 flex-1"><span class="block text-sm font-semibold text-text-primary">{{ product.name }}</span><span class="mt-1 block text-xs text-text-muted">{{ product.variants.length }} {{ product.variants.length === 1 ? 'variant' : 'variants' }}<ng-container *ngIf="product.variantSummary"> · {{ product.variantSummary }}</ng-container></span><span class="mt-1 block text-xs" [class.text-text-muted]="product.startingPrice === null">{{ product.startingPrice !== null ? 'From ' + (product.startingPrice | number) + ' MMK' : 'Sale price unavailable' }}</span></span>
+                <lucide-icon name="arrow-right" [size]="18" aria-hidden="true" class="shrink-0 text-brand" />
+              </button>
+            </li>
+          </ul>
+          <ng-template #emptyResults><div class="rounded-2xl border border-border bg-surface p-5 text-center"><p class="text-sm font-semibold">No products found</p><p class="mt-1 text-xs text-text-muted">Try another search or category.</p><button type="button" (click)="resetFilters()" class="mt-2 min-h-[44px] rounded-lg px-3 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">Clear filters</button></div></ng-template>
+        </ng-container>
+      </section>
+
+      <section *ngSwitchCase="'review'" aria-labelledby="selected-items-title" class="space-y-3">
+        <div class="flex items-center justify-between gap-2"><h2 id="selected-items-title" class="text-base font-semibold">Selected items</h2><button type="button" (click)="clear()" [disabled]="!selected.length" class="min-h-[44px] rounded-lg px-2 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:text-text-muted">Clear all</button></div>
+        <div *ngIf="!selected.length" class="rounded-2xl border border-border bg-surface p-5 text-center"><p class="text-sm font-semibold">No items selected</p><p class="mt-1 text-xs text-text-muted">Add a variant before continuing.</p></div>
+        <ul class="space-y-3">
+          <li *ngFor="let row of selected; trackBy: trackById" class="rounded-2xl border border-border bg-surface p-3 shadow-sm">
+            <div class="flex items-start gap-2">
+              <app-stock-variant-thumbnail [variant]="row.product" />
+              <div class="min-w-0 flex-1"><h3 class="text-sm font-semibold">{{ row.variant.name }}</h3><p class="mt-1 break-words text-xs text-text-muted">SKU: {{ row.variant.sku }}</p><p class="mt-1 text-xs text-text-muted">Available: {{ row.variant.available }}</p></div>
+              <button type="button" (click)="remove(row.variant.id)" [attr.aria-label]="'Remove ' + row.variant.name" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"><lucide-icon name="trash-2" [size]="18" aria-hidden="true" /></button>
+            </div>
+            <p class="mt-2 text-xs text-text-muted">Unit price: {{ catalog.hasPrice(row.variant) ? (row.variant.salePrice | number) + ' MMK' : 'Unavailable' }} · Line total: {{ lineTotal(row) !== null ? (lineTotal(row) | number) + ' MMK' : 'Unavailable' }}</p>
+            <div class="mt-3 flex items-center gap-2">
+              <label [for]="'quantity-' + row.variant.id" class="mr-auto text-xs text-text-muted">Quantity</label>
+              <div class="inline-flex items-center overflow-hidden rounded-xl border border-border">
+                <button type="button" (click)="adjust(row, -1)" [disabled]="row.control.invalid || row.control.value <= 1" [attr.aria-label]="'Decrease quantity for ' + row.variant.name" class="flex h-11 w-11 items-center justify-center bg-brand-soft text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand disabled:bg-page disabled:text-text-muted"><lucide-icon name="minus" [size]="18" aria-hidden="true" /></button>
+                <input [id]="'quantity-' + row.variant.id" [formControl]="row.control" [attr.aria-label]="'Quantity for ' + row.variant.name" type="number" min="1" [max]="row.variant.available" step="1" inputmode="numeric" [attr.aria-invalid]="row.control.invalid" [attr.aria-describedby]="'quantity-error-' + row.variant.id" class="h-11 w-16 border-x border-border bg-surface text-center text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand" />
+                <button type="button" (click)="adjust(row, 1)" [disabled]="row.control.invalid || row.control.value >= row.variant.available" [attr.aria-label]="'Increase quantity for ' + row.variant.name" class="flex h-11 w-11 items-center justify-center bg-brand-soft text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand disabled:bg-page disabled:text-text-muted"><lucide-icon name="plus" [size]="18" aria-hidden="true" /></button>
+              </div>
+            </div>
+            <p [id]="'quantity-error-' + row.variant.id" [hidden]="row.control.valid" class="mt-2 text-xs leading-5 text-orange-800">Enter a whole number from 1 to {{ row.variant.available }}.</p>
+          </li>
+        </ul>
+        <button type="button" (click)="selectMore()" class="min-h-[44px] rounded-lg px-2 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">Add more items</button>
+      </section>
+
+      <section *ngSwitchCase="'confirm'" aria-labelledby="confirm-items-title" class="space-y-3">
+        <div class="flex items-center justify-between gap-2"><h2 id="confirm-items-title" class="text-base font-semibold">Items to check out</h2><button type="button" (click)="edit()" class="min-h-[44px] rounded-lg px-2 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">Edit</button></div>
+        <ul class="divide-y divide-border rounded-2xl border border-border bg-surface px-3">
+          <li *ngFor="let row of selected; trackBy: trackById" class="flex items-center gap-3 py-3">
+            <app-stock-variant-thumbnail [variant]="row.product" /><div class="min-w-0 flex-1"><p class="text-sm font-semibold">{{ row.variant.name }}</p><p class="mt-1 break-words text-xs text-text-muted">SKU: {{ row.variant.sku }}</p></div><p class="shrink-0 text-sm font-semibold">{{ row.control.value }} units</p></li>
+        </ul>
+        <p class="flex items-start gap-2 rounded-xl border border-brand/20 bg-brand-soft p-3 text-sm leading-6 text-brand-dark"><lucide-icon name="info" [size]="20" aria-hidden="true" class="mt-0.5 shrink-0" /><span>This will transfer the selected stock from the shared pool to your booth inventory.<span class="mt-1 block text-xs">Demo preview only. Confirming does not move inventory.</span></span></p>
+      </section>
+
+      <section *ngSwitchCase="'success'" aria-labelledby="checkout-success-title" class="space-y-5">
+        <div class="py-5 text-center"><span class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brand-soft text-brand"><lucide-icon name="check" [size]="44" [strokeWidth]="2.5" aria-hidden="true" /></span><h2 id="checkout-success-title" class="mt-5 text-2xl font-bold tracking-tight">Check Out Successful</h2><p class="mt-2 text-sm leading-6 text-text-muted">{{ receipt.units }} units shown as received in this demo.</p><p class="mt-1 text-xs text-text-muted">No inventory or stock movement records were changed.</p></div>
+        <section aria-labelledby="transfer-details-title" class="rounded-2xl border border-border bg-surface p-4 shadow-sm">
+          <h3 id="transfer-details-title" class="text-base font-semibold">Transfer details</h3>
+          <dl class="mt-3 divide-y divide-border text-sm">
+            <div class="flex flex-wrap justify-between gap-2 py-3"><dt class="text-text-muted">Reference</dt><dd class="break-all font-semibold">{{ receipt.reference }}</dd></div>
+            <div class="flex flex-wrap justify-between gap-2 py-3"><dt class="text-text-muted">Date &amp; time (demo)</dt><dd>{{ receipt.at | date:'MMM d, y, h:mm a':'+0630' }}</dd></div>
+            <div class="flex flex-wrap justify-between gap-2 py-3"><dt class="text-text-muted">From</dt><dd>{{ demo.source }}</dd></div>
+            <div class="flex flex-wrap justify-between gap-2 py-3"><dt class="text-text-muted">To</dt><dd>{{ demo.destination }}</dd></div>
+            <div class="flex justify-between gap-2 py-3"><dt class="text-text-muted">Total variants</dt><dd class="font-semibold">{{ receipt.variants }}</dd></div>
+            <div class="flex justify-between gap-2 py-3"><dt class="text-text-muted">Total units</dt><dd class="font-semibold">{{ receipt.units }}</dd></div>
+          </dl>
+        </section>
+      </section>
+    </div>
+    </ng-container>
+  </section>
+
+  <footer *ngIf="!detailProduct && (step !== 'select' || selected.length > 0)" #actionCard aria-label="Check out actions" class="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 mx-auto max-w-5xl rounded-2xl border border-border bg-surface/95 p-4 shadow-lg sm:inset-x-6">
+    <ng-container *ngIf="step === 'select'">
+      <div class="flex items-center gap-3">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand"><lucide-icon name="shopping-cart" [size]="23" aria-hidden="true" /></span>
+        <div class="min-w-0 flex-1"><p class="text-xs text-text-muted">{{ selected.length }} {{ selected.length === 1 ? 'variant' : 'variants' }} · {{ totalUnits }} units</p><p class="mt-1 text-sm font-semibold">{{ totalValue !== null ? (totalValue | number) + ' MMK' : 'Prices unavailable' }}</p></div>
+        <button type="button" (click)="review()" class="min-h-[44px] rounded-lg px-2 text-sm font-semibold text-brand focus-visible:ring-2 focus-visible:ring-brand">View</button>
+      </div>
+      <button type="button" (click)="review()" [disabled]="!selectionValid" class="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted">Next: Review ({{ selected.length }}) <lucide-icon name="arrow-right" [size]="18" aria-hidden="true" /></button>
+    </ng-container>
+    <ng-container *ngIf="step === 'review' || step === 'confirm'">
+      <p class="mb-2 flex justify-between gap-2 text-xs text-text-muted"><span>Total value</span><span>{{ totalValue !== null ? (totalValue | number) + ' MMK' : 'Unavailable' }}</span></p>
+      <dl class="space-y-2 text-sm"><div class="flex justify-between gap-2"><dt class="text-text-muted">Total variants</dt><dd class="font-semibold">{{ selected.length }}</dd></div><div class="flex items-center justify-between gap-2"><dt class="font-semibold">Total units</dt><dd class="text-2xl font-bold text-brand">{{ totalUnits }}</dd></div></dl>
+      <button *ngIf="step === 'review'" type="button" (click)="reviewTransfer()" [disabled]="!selectionValid" class="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:bg-border disabled:text-text-muted">Review Transfer <lucide-icon name="arrow-right" [size]="18" aria-hidden="true" /></button>
+      <button *ngIf="step === 'confirm'" type="button" (click)="confirm()" [disabled]="!selectionValid" class="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:bg-border disabled:text-text-muted">Confirm Check Out <lucide-icon name="arrow-right" [size]="18" aria-hidden="true" /></button>
+    </ng-container>
+    <div *ngIf="step === 'success'" class="space-y-2">
+      <a routerLink="/more/stock-movements" class="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-brand bg-surface px-3 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">View in Stock Movements</a>
+      <a routerLink="/products" class="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-brand px-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"><lucide-icon name="arrow-left" [size]="18" aria-hidden="true" />Back to Stock</a>
+    </div>
+  </footer>
+</div>
